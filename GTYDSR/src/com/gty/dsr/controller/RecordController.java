@@ -5,6 +5,8 @@ import java.sql.Date;
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -31,25 +33,8 @@ import com.gty.dsr.utility.JSONUtility;
 @Controller
 public class RecordController {
 	@RequestMapping("/")
-	public ModelAndView showIndex() {
-		ModelAndView modelAndView = new ModelAndView("record");
-
-		List<Record> records = RecordService.getAllRecords();
-		modelAndView.addObject("records", records);
-
-		List<Branch> branches = BranchService.getAllBranches();
-		Collections.sort(branches, new BranchComparator());
-		modelAndView.addObject("branches", branches);
-
-		List<Bank> banks = BankService.getAllBanks();
-		Collections.sort(banks, new BankComparator());
-		modelAndView.addObject("banks", banks);
-
-		List<Discrepancy> discrepancies = DiscrepancyService.getAllDiscrepancies();
-		Collections.sort(discrepancies, new DiscrepancyComparator());
-		modelAndView.addObject("discrepancies", discrepancies);
-
-		return modelAndView;
+	public void showIndex(HttpServletResponse response) throws IOException {
+		response.sendRedirect("records");
 	}
 	@RequestMapping("/records")
 	public ModelAndView showRecords() {
