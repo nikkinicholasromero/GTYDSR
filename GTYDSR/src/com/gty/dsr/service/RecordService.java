@@ -66,53 +66,37 @@ public final class RecordService {
 	}
 
 	private static String validateNewRecord(Record record) {
-		String validationResult = "success";
+		String validationResult = validateRecord(record);
 
 		RecordDAO dao = BeanFactory.getRecordDAO();
 		Record existingRecord = dao.getRecordByBranchAndDate(record.getBranch(), record.getDate());
 		if (existingRecord != null) {
 			validationResult = "Record for this branch and date already exists. ";
-		} else if (record.getConsignment() < 0) {
-			validationResult = "Consignment value cannot be less than zero. ";
-		} else if (record.getOverdue() < 0) {
-			validationResult = "Overdue value cannot be less than zero. ";
-		} else if (record.getAdvanced() < 0) {
-			validationResult = "Advanced value cannot be less than zero. ";
-		} else if (record.getOpenConsignment() < 0) {
-			validationResult = "Open Consignment value cannot be less than zero. ";
-		} else if (record.getDueConsignment() < 0) {
-			validationResult = "Due Consignment value cannot be less than zero. ";
-		} else if (record.getNewConsignment() < 0) {
-			validationResult = "New Consignment value cannot be less than zero. ";
-		} else if (record.getSales().compareTo(BigDecimal.ZERO) < 0) {
-			validationResult = "Sales value cannot be less than zero. ";
-		} else if (record.getExpense().compareTo(BigDecimal.ZERO) < 0) {
-			validationResult = "Expense value cannot be less than zero. ";
-		} else if (record.getDeposit().compareTo(BigDecimal.ZERO) < 0) {
-			validationResult = "Deposit value cannot be less than zero. ";
-		} else if (record.getAcoh().compareTo(BigDecimal.ZERO) < 0) {
-			validationResult = "ACOH value cannot be less than zero. ";
-		} else if (record.getDiscrepancyAmount().compareTo(BigDecimal.ZERO) < 0) {
-			validationResult = "Discrepancy Amount value cannot be less than zero. ";
-		} else if ((record.getDiscrepancyAmount().compareTo(BigDecimal.ZERO) > 0) && (record.getDiscrepancyType().equals("None"))) {
-			validationResult = "Discrepancy amount should not be zero if Discrepancy Type is not 'None'";
-		} else if ((!record.getDiscrepancyType().equals("None")) && (record.getDiscrepancyCategory().equals("None"))) {
-			validationResult = "Discrepancy Type should not be 'None' if Discrepancy Category is not 'None'";
-		} else if (record.getDate() == null) {
-			validationResult = "Date should not be empty. ";
-		} 
+		}
 
 		return validationResult;
 	}
 
 	private static String validateRecordUpdate(Record record) {
-		String validationResult = "success";
+		String validationResult = validateRecord(record);
 
 		RecordDAO dao = BeanFactory.getRecordDAO();
 		Record existingRecord = dao.getRecordByBranchAndDate(record.getBranch(), record.getDate());
 		if ((existingRecord != null) && (existingRecord.getId() != record.getId())) {
 			validationResult = "Record for this branch and date already exists. ";
-		} else if (record.getConsignment() < 0) {
+		}
+
+		return validationResult;
+	}
+	
+	private static String validateRecord(Record record) {
+		String validationResult = "success";
+		
+		if (record.getBranch() == "") {
+			validationResult = "Branch cannot be empty. ";
+		} else if (record.getDate() == null) {
+			validationResult = "Date cannot be empty";
+		} else  if (record.getConsignment() < 0) {
 			validationResult = "Consignment value cannot be less than zero. ";
 		} else if (record.getOverdue() < 0) {
 			validationResult = "Overdue value cannot be less than zero. ";
@@ -124,23 +108,37 @@ public final class RecordService {
 			validationResult = "Due Consignment value cannot be less than zero. ";
 		} else if (record.getNewConsignment() < 0) {
 			validationResult = "New Consignment value cannot be less than zero. ";
+		} else if (record.getSales() == null) {
+			validationResult = "Sales value cannot be empty or have an incorrect amount format. ";
 		} else if (record.getSales().compareTo(BigDecimal.ZERO) < 0) {
 			validationResult = "Sales value cannot be less than zero. ";
+		} else if (record.getExpense() == null) {
+			validationResult = "Expense value cannot be empty or have an incorrect amount format. ";
 		} else if (record.getExpense().compareTo(BigDecimal.ZERO) < 0) {
 			validationResult = "Expense value cannot be less than zero. ";
+		} else if (record.getDeposit() == null) {
+			validationResult = "Deposit value cannot be empty or have an incorrect amount format. ";
 		} else if (record.getDeposit().compareTo(BigDecimal.ZERO) < 0) {
 			validationResult = "Deposit value cannot be less than zero. ";
-		} else if (record.getAcoh().compareTo(BigDecimal.ZERO) < 0) {
-			validationResult = "ACOH value cannot be less than zero. ";
+		} else if (record.getPcoh() == null) {
+			validationResult = "PCOH value cannot be empty or have an incorrect amount format. ";
+		} else if (record.getAcoh() == null) {
+			validationResult = "ACOH value cannot be empty or have an incorrect amount format. ";
+		} else if (record.getDiff() == null) {
+			validationResult = "Diff value cannot be empty or have an incorrect amount format. ";
 		} else if (record.getDiscrepancyAmount().compareTo(BigDecimal.ZERO) < 0) {
 			validationResult = "Discrepancy Amount value cannot be less than zero. ";
-		} else if ((record.getDiscrepancyAmount().compareTo(BigDecimal.ZERO) > 0) && (record.getDiscrepancyType().equals("None"))) {
-			validationResult = "Discrepancy amount should not be zero if Discrepancy Type is not 'None'";
-		} else if ((!record.getDiscrepancyType().equals("None")) && (record.getDiscrepancyCategory().equals("None"))) {
-			validationResult = "Discrepancy Type should not be 'None' if Discrepancy Category is not 'None'";
-		} else if (record.getDate() == null) {
-			validationResult = "Date should not be empty. ";
-		} 
+		} else if (record.getDiscrepancyAmount() == null) {
+			validationResult = "Discrepancy Amount value cannot be empty or have an incorrect amount format. ";
+		} else if ((!record.getDiscrepancyType().equals("None")) || (!record.getDiscrepancyCategory().equals("None")) || (record.getDiscrepancyAmount().compareTo(BigDecimal.ZERO) > 0)) {
+			if (record.getDiscrepancyType().equals("None")) {
+				validationResult = "Discrepancy Type cannot be none if Category is not 'None' or Amount is not zero. ";
+			} else if (record.getDiscrepancyCategory().equals("None")) {
+				validationResult = "Discrepancy Category cannot be none if Type is not 'None' or Amount is not zero. ";
+			} else if (record.getDiscrepancyAmount().compareTo(BigDecimal.ZERO) == 0) {
+				validationResult = "Discrepancy Amount cannot be none if Category or Type is not 'None'. ";
+			}
+		}
 
 		return validationResult;
 	}
