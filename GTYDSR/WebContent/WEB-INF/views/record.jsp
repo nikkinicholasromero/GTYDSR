@@ -757,7 +757,7 @@
 		function recomputeAddDiff() {
 			var pcoh = parseInt($("#addPcoh").val());
 			var acoh = parseInt($("#addAcoh").val());
-			var diff = pcoh - acoh;
+			var diff = acoh - pcoh;
 
 			$("#addDiff").val(diff);
 		}
@@ -779,7 +779,7 @@
 		function recomputeUpdateDiff() {
 			var pcoh = parseInt($("#updatePcoh").val());
 			var acoh = parseInt($("#updateAcoh").val());
-			var diff = pcoh - acoh;
+			var diff = acoh - pcoh;
 
 			$("#updateDiff").val(diff);
 		}
