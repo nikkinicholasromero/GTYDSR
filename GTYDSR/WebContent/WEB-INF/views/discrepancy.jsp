@@ -70,8 +70,7 @@
 				</div>
 			</div>
 
-			<div id="successNotificationDiv" class="alert alert-success alert-dismissable" style="display: none">
-				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			<div id="successNotificationDiv" class="alert alert-success" style="display: none">
 				<p id="successNotificationMessage"></p>
 			</div>
 
@@ -85,8 +84,7 @@
 						<div class="modal-body">
 							<div class="row" style="margin-bottom: 5px">
 								<div class="col-md-12 col-xs-12">
-									<div id="successAddModalNotificationDiv" class="alert alert-warning alert-dismissable" style="display: none">
-										<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+									<div id="successAddModalNotificationDiv" class="alert alert-warning" style="display: none">
 										<p id="successAddModalNotificationMessage"></p>
 									</div>
 								</div>
@@ -122,8 +120,7 @@
 						<div class="modal-body">
 							<div class="row" style="margin-bottom: 5px">
 								<div class="col-md-12 col-xs-12">
-									<div id="successUpdateModalNotificationDiv" class="alert alert-warning alert-dismissable" style="display: none">
-										<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+									<div id="successUpdateModalNotificationDiv" class="alert alert-warning" style="display: none">
 										<p id="successUpdateModalNotificationMessage"></p>
 									</div>
 								</div>
