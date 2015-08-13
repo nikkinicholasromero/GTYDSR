@@ -27,7 +27,7 @@ public class BranchController {
 		ModelAndView modelAndView = new ModelAndView("branch");
 
 		List<Branch> branches = BranchService.getAllBranches();
-		List<Bank> banks = BankService.getAllBanks();
+		List<Bank> banks = BankService.getAllActiveBanks();
 		
 		modelAndView.addObject("branches", branches);
 		modelAndView.addObject("banks", banks);

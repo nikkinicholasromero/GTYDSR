@@ -47,6 +47,12 @@ public class BranchDAO implements RowMapper<Branch> {
 		return branches;
 	}
 
+	public List<Branch> getAllActiveBranches() {
+		String SQL = "select * from branch where status = 'Active' order by name asc";
+		List<Branch> branches = jdbcTemplate.query(SQL, this);
+		return branches;
+	}
+
 	public void addBranch(Branch branch) {
 		String SQL = "insert into branch (name, location, remittance_bank, proprietor, contact_number, status) values (?, ?, ?, ?, ?, ?)";
 		jdbcTemplate.update(SQL, branch.getName(), branch.getLocation(), branch.getRemittanceBank(), branch.getProprietor(), branch.getContactNumber(), branch.getStatus());

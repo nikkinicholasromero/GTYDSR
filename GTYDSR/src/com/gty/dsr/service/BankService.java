@@ -28,6 +28,10 @@ public final class BankService {
 		return bankDao.getAllBanks();
 	}
 
+	public static List<Bank> getAllActiveBanks() {
+		return bankDao.getAllActiveBanks();
+	}
+
 	public static String addBank(Bank bank) {
 		String validationResult = validateNewBank(bank);
 

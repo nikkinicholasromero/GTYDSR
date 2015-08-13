@@ -92,11 +92,12 @@
 							<div class="row" style="margin-bottom: 5px">
 								<div class="col-md-8 col-xs-12">
 									<label>Branch</label>
-									<select class="form-control input-sm" id="addBranch" name="addBranch" onchange="getAddPreviousRecordAcoh()">
+									<input type="text" class="form-control input-sm" id="addBranch" name="addBranch" list="branches" maxlength="50">
+									<datalist id="branches">
 										<c:forEach items="${branches}" var="branch">
-											<option value="${branch.name}">${branch.name}</option>
+											<option value="${branch.name}">
 										</c:forEach>
-									</select>
+									</datalist>
 								</div>
 								<div class="col-md-4 col-xs-12">
 									<label>Date</label>
@@ -217,11 +218,12 @@
 								<input type="hidden" class="form-control input-sm" id="updateId" name="updateId">
 								<div class="col-md-8 col-xs-12">
 									<label>Branch</label>
-									<select class="form-control input-sm" id="updateBranch" name="updateBranch" onchange="getUpdatePreviousRecordAcoh()">
+									<input type="text" class="form-control input-sm" id="updateBranch" name="updateBranch" list="branches" maxlength="50">
+									<datalist id="branches">
 										<c:forEach items="${branches}" var="branch">
-											<option value="${branch.name}">${branch.name}</option>
+											<option value="${branch.name}">
 										</c:forEach>
-									</select>
+									</datalist>
 								</div>
 								<div class="col-md-4 col-xs-12">
 									<label>Date</label>

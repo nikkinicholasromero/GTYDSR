@@ -112,11 +112,12 @@
 							<div class="row" style="margin-bottom: 5px">
 								<div class="col-md-6 col-xs-12">
 									<label>Remittance Bank</label> 
-									<select class="form-control input-sm" id="addRemittanceBank" name="addRemittanceBank">
+									<input type="text" class="form-control input-sm" id="addRemittanceBank" name="addRemittanceBank" list="banks" maxlength="50">
+									<datalist id="banks">
 										<c:forEach items="${banks}" var="bank">
-											<option value="${bank.name}">${bank.name}</option>
+											<option value="${bank.name}">
 										</c:forEach>
-									</select>
+									</datalist>
 								</div>
 								<div class="col-md-6 col-xs-12">
 									<label>Status</label>
@@ -175,11 +176,12 @@
 							<div class="row" style="margin-bottom: 5px">
 								<div class="col-md-6 col-xs-12">
 									<label>Remittance Bank</label>
-									<select class="form-control input-sm" id="updateRemittanceBank" name="updateRemittanceBank">
+									<input type="text" class="form-control input-sm" id="updateRemittanceBank" name="updateRemittanceBank" list="banks" maxlength="50">
+									<datalist id="banks">
 										<c:forEach items="${banks}" var="bank">
-											<option value="${bank.name}">${bank.name}</option>
+											<option value="${bank.name}">
 										</c:forEach>
-									</select>
+									</datalist>
 								</div>
 								<div class="col-md-6 col-xs-12">
 									<label>Status</label>

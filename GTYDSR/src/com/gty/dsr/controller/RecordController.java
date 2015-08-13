@@ -16,11 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.gty.dsr.domain.Bank;
 import com.gty.dsr.domain.Branch;
 import com.gty.dsr.domain.Discrepancy;
 import com.gty.dsr.domain.Record;
-import com.gty.dsr.service.BankService;
 import com.gty.dsr.service.BranchService;
 import com.gty.dsr.service.DiscrepancyService;
 import com.gty.dsr.service.RecordService;
@@ -38,13 +36,11 @@ public class RecordController {
 		ModelAndView modelAndView = new ModelAndView("record");
 
 		List<Record> records = RecordService.getAllRecords();
-		List<Branch> branches = BranchService.getAllBranches();
-		List<Bank> banks = BankService.getAllBanks();
+		List<Branch> branches = BranchService.getAllActiveBranches();
 		List<Discrepancy> discrepancies = DiscrepancyService.getAllDiscrepancies();
 		
 		modelAndView.addObject("records", records);
 		modelAndView.addObject("branches", branches);
-		modelAndView.addObject("banks", banks);
 		modelAndView.addObject("discrepancies", discrepancies);
 
 		return modelAndView;

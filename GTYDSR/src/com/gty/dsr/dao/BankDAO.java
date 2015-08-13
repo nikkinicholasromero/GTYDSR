@@ -41,6 +41,12 @@ public class BankDAO implements RowMapper<Bank> {
 		return banks;
 	}
 
+	public List<Bank> getAllActiveBanks() {
+		String SQL = "select * from bank where status = 'Active' order by name asc";
+		List<Bank> banks = jdbcTemplate.query(SQL, this);
+		return banks;
+	}
+
 	public void addBank(Bank bank) {
 		String SQL = "insert into bank (name, status) values (?, ?)";
 		jdbcTemplate.update(SQL, bank.getName(), bank.getStatus());

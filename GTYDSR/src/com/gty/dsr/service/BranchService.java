@@ -26,6 +26,10 @@ public final class BranchService {
 		return branchDao.getAllBranches();
 	}
 
+	public static List<Branch> getAllActiveBranches() {
+		return branchDao.getAllActiveBranches();
+	}
+
 	public static String addBranch(Branch branch) {
 		String validationResult = validateNewBranch(branch);
 
