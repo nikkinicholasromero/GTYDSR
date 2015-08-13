@@ -8,30 +8,29 @@ import com.gty.dsr.dao.RecordDAO;
 import com.gty.dsr.domain.Discrepancy;
 
 public final class DiscrepancyService {
+	private static final DiscrepancyDAO discrepancyDao = BeanFactory.getDiscrepancyDAO();
+	private static final RecordDAO recordDao = BeanFactory.getRecordDAO();
+	
 	private DiscrepancyService() {
 	}
 
 	public static Discrepancy getDiscrepancyById(int id) {
-		DiscrepancyDAO dao = BeanFactory.getDiscrepancyDAO();
-		return dao.getDiscrepancyById(id);
+		return discrepancyDao.getDiscrepancyById(id);
 	}
 
 	public static Discrepancy getDiscrepancyByDiscrepancyType(String type) {
-		DiscrepancyDAO dao = BeanFactory.getDiscrepancyDAO();
-		return dao.getDiscrepancyByDiscrepancyType(type);
+		return discrepancyDao.getDiscrepancyByDiscrepancyType(type);
 	}
 
 	public static List<Discrepancy> getAllDiscrepancies() {
-		DiscrepancyDAO dao = BeanFactory.getDiscrepancyDAO();
-		return dao.getAllDiscrepancies();
+		return discrepancyDao.getAllDiscrepancies();
 	}
 
 	public static String addDiscrepancy(Discrepancy discrepancy) {
 		String validationResult = validateNewDiscrepancy(discrepancy);
 
 		if (validationResult.equalsIgnoreCase("success")) {
-			DiscrepancyDAO dao = BeanFactory.getDiscrepancyDAO();
-			dao.addDiscrepancy(discrepancy);
+			discrepancyDao.addDiscrepancy(discrepancy);
 		}
 
 		return validationResult;
@@ -41,14 +40,10 @@ public final class DiscrepancyService {
 		String validationResult = validateDiscrepancyUpdate(discrepancy);
 
 		if (validationResult.equalsIgnoreCase("success")) {
-			DiscrepancyDAO discrepancyDao = BeanFactory.getDiscrepancyDAO();
 			Discrepancy currentDiscrepancy = discrepancyDao.getDiscrepancyById(discrepancy.getId());
 			String currentDiscrepancyName = currentDiscrepancy.getType();
 			String newDiscrepancyName = discrepancy.getType();
-			
-			RecordDAO recordDao = BeanFactory.getRecordDAO();
 			recordDao.updateDiscrepancyOfRecords(currentDiscrepancyName, newDiscrepancyName);
-			
 			discrepancyDao.udpateDiscrepancy(discrepancy);
 		}
 
@@ -58,8 +53,7 @@ public final class DiscrepancyService {
 	private static String validateNewDiscrepancy(Discrepancy discrepancy) {
 		String validationResult = "success";
 
-		DiscrepancyDAO dao = BeanFactory.getDiscrepancyDAO();
-		Discrepancy existingDiscrepancy = dao.getDiscrepancyByDiscrepancyType(discrepancy.getType());
+		Discrepancy existingDiscrepancy = discrepancyDao.getDiscrepancyByDiscrepancyType(discrepancy.getType());
 		if (existingDiscrepancy != null) {
 			validationResult = "Discrepancy type already exists. ";
 		} else if ("".equalsIgnoreCase(discrepancy.getType())) {
@@ -72,8 +66,7 @@ public final class DiscrepancyService {
 	private static String validateDiscrepancyUpdate(Discrepancy discrepancy) {
 		String validationResult = "success";
 
-		DiscrepancyDAO dao = BeanFactory.getDiscrepancyDAO();
-		Discrepancy existingDiscrepancy = dao.getDiscrepancyByDiscrepancyType(discrepancy.getType());
+		Discrepancy existingDiscrepancy = discrepancyDao.getDiscrepancyByDiscrepancyType(discrepancy.getType());
 		if ((existingDiscrepancy != null) && (existingDiscrepancy.getId() != discrepancy.getId())) {
 			validationResult = "Discrepancy type already exists. ";
 		} else if ("".equalsIgnoreCase(discrepancy.getType())) {

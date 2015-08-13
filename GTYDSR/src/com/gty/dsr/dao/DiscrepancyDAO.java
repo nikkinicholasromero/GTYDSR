@@ -36,7 +36,7 @@ public class DiscrepancyDAO implements RowMapper<Discrepancy> {
 	}
 
 	public List<Discrepancy> getAllDiscrepancies() {
-		String SQL = "select * from discrepancy";
+		String SQL = "select * from discrepancy order by type asc";
 		List<Discrepancy> discrepancys = jdbcTemplate.query(SQL, this);
 		return discrepancys;
 	}

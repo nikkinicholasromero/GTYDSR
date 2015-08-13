@@ -42,7 +42,7 @@ public class BranchDAO implements RowMapper<Branch> {
 	}
 
 	public List<Branch> getAllBranches() {
-		String SQL = "select * from branch";
+		String SQL = "select * from branch order by name asc";
 		List<Branch> branches = jdbcTemplate.query(SQL, this);
 		return branches;
 	}

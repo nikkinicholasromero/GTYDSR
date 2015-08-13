@@ -1,7 +1,6 @@
 package com.gty.dsr.controller;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -18,7 +17,6 @@ import com.gty.dsr.domain.Bank;
 import com.gty.dsr.domain.Branch;
 import com.gty.dsr.service.BankService;
 import com.gty.dsr.service.BranchService;
-import com.gty.dsr.utility.BankComparator;
 import com.gty.dsr.utility.JSONUtility;
 
 @Controller
@@ -29,10 +27,9 @@ public class BranchController {
 		ModelAndView modelAndView = new ModelAndView("branch");
 
 		List<Branch> branches = BranchService.getAllBranches();
-		modelAndView.addObject("branches", branches);
-
 		List<Bank> banks = BankService.getAllBanks();
-		Collections.sort(banks, new BankComparator());
+		
+		modelAndView.addObject("branches", branches);
 		modelAndView.addObject("banks", banks);
 
 		return modelAndView;

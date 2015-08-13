@@ -8,29 +8,28 @@ import com.gty.dsr.dao.RecordDAO;
 import com.gty.dsr.domain.Branch;
 
 public final class BranchService {
+	private static final BranchDAO branchDao = BeanFactory.getBranchDAO();
+	private static final RecordDAO recordDao = BeanFactory.getRecordDAO();
+	
 	private BranchService() {
 	}
 
 	public static Branch getBranchById(int id) {
-		BranchDAO dao = BeanFactory.getBranchDAO();
-		return dao.getBranchById(id);
+		return branchDao.getBranchById(id);
 	}
 
 	public static Branch getBranchByBranchName(String name) {
-		BranchDAO dao = BeanFactory.getBranchDAO();
-		return dao.getBranchByBranchName(name);
+		return branchDao.getBranchByBranchName(name);
 	}
 
 	public static List<Branch> getAllBranches() {
-		BranchDAO dao = BeanFactory.getBranchDAO();
-		return dao.getAllBranches();
+		return branchDao.getAllBranches();
 	}
 
 	public static String addBranch(Branch branch) {
 		String validationResult = validateNewBranch(branch);
 
 		if (validationResult.equalsIgnoreCase("success")) {
-			BranchDAO branchDao = BeanFactory.getBranchDAO();
 			branchDao.addBranch(branch);
 		}
 
@@ -41,13 +40,9 @@ public final class BranchService {
 		String validationResult = validateBranchUpdate(branch);
 
 		if (validationResult.equalsIgnoreCase("success")) {
-			BranchDAO branchDao = BeanFactory.getBranchDAO();
-			
 			Branch currentBranch = branchDao.getBranchById(branch.getId());
 			String currentBranchName = currentBranch.getName();
 			String newBranchName = branch.getName();
-			
-			RecordDAO recordDao = BeanFactory.getRecordDAO();
 			recordDao.updateBranchesOfRecords(currentBranchName, newBranchName);
 			
 			branchDao.updateBranch(branch);
@@ -59,8 +54,7 @@ public final class BranchService {
 	private static String validateNewBranch(Branch branch) {
 		String validationResult = "success";
 
-		BranchDAO dao = BeanFactory.getBranchDAO();
-		Branch existingBranch = dao.getBranchByBranchName(branch.getName());
+		Branch existingBranch = branchDao.getBranchByBranchName(branch.getName());
 		if (existingBranch != null) {
 			validationResult = "Branch name already exists. ";
 		} else if ("".equalsIgnoreCase(branch.getName())) {
@@ -73,8 +67,7 @@ public final class BranchService {
 	private static String validateBranchUpdate(Branch branch) {
 		String validationResult = "success";
 
-		BranchDAO dao = BeanFactory.getBranchDAO();
-		Branch existingBranch = dao.getBranchByBranchName(branch.getName());
+		Branch existingBranch = branchDao.getBranchByBranchName(branch.getName());
 		if ((existingBranch != null) && (existingBranch.getId() != branch.getId())) {
 			validationResult = "Branch name already exists. ";
 		} else if ("".equalsIgnoreCase(branch.getName())) {

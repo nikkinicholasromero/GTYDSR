@@ -11,17 +11,18 @@ import com.gty.dsr.domain.Branch;
 import com.gty.dsr.domain.Record;
 
 public final class RecordService {
+	private static final RecordDAO recordDao = BeanFactory.getRecordDAO();
+	private static final BranchDAO branchDao = BeanFactory.getBranchDAO();
+	
 	private RecordService() {
 	}
 
 	public static Record getRecordById(int id) {
-		RecordDAO dao = BeanFactory.getRecordDAO();
-		return dao.getRecordById(id);
+		return recordDao.getRecordById(id);
 	}
 
 	public static BigDecimal getPreviousRecordAcoh(Record record) {
-		RecordDAO dao = BeanFactory.getRecordDAO();
-		Record previousRecord = dao.getPreviousRecord(record);
+		Record previousRecord = recordDao.getPreviousRecord(record);
 		if(previousRecord != null) {
 			return previousRecord.getAcoh();
 		} else {
@@ -30,24 +31,19 @@ public final class RecordService {
 	}
 
 	public static Record getRecordByBranchAndDate(String branch, Date date) {
-		RecordDAO dao = BeanFactory.getRecordDAO();
-		return dao.getRecordByBranchAndDate(branch, date);
+		return recordDao.getRecordByBranchAndDate(branch, date);
 	}
 
 	public static List<Record> getAllRecords() {
-		RecordDAO dao = BeanFactory.getRecordDAO();
-		return dao.getAllRecords();
+		return recordDao.getAllRecords();
 	}
 	
 	public static String addRecord(Record record) {
 		String validationResult = validateNewRecord(record);
 
 		if (validationResult.equalsIgnoreCase("success")) {
-			BranchDAO branchDao = BeanFactory.getBranchDAO();
 			Branch branch = branchDao.getBranchByBranchName(record.getBranch());
 			record.setBank(branch.getRemittanceBank());
-
-			RecordDAO recordDao = BeanFactory.getRecordDAO();
 			recordDao.addRecord(record);
 		}
 
@@ -58,8 +54,7 @@ public final class RecordService {
 		String validationResult = validateRecordUpdate(record);
 
 		if (validationResult.equalsIgnoreCase("success")) {
-			RecordDAO dao = BeanFactory.getRecordDAO();
-			dao.updateRecord(record);
+			recordDao.updateRecord(record);
 		}
 
 		return validationResult;
@@ -68,8 +63,7 @@ public final class RecordService {
 	private static String validateNewRecord(Record record) {
 		String validationResult = validateRecord(record);
 
-		RecordDAO dao = BeanFactory.getRecordDAO();
-		Record existingRecord = dao.getRecordByBranchAndDate(record.getBranch(), record.getDate());
+		Record existingRecord = recordDao.getRecordByBranchAndDate(record.getBranch(), record.getDate());
 		if (existingRecord != null) {
 			validationResult = "Record for this branch and date already exists. ";
 		}
@@ -80,8 +74,7 @@ public final class RecordService {
 	private static String validateRecordUpdate(Record record) {
 		String validationResult = validateRecord(record);
 
-		RecordDAO dao = BeanFactory.getRecordDAO();
-		Record existingRecord = dao.getRecordByBranchAndDate(record.getBranch(), record.getDate());
+		Record existingRecord = recordDao.getRecordByBranchAndDate(record.getBranch(), record.getDate());
 		if ((existingRecord != null) && (existingRecord.getId() != record.getId())) {
 			validationResult = "Record for this branch and date already exists. ";
 		}

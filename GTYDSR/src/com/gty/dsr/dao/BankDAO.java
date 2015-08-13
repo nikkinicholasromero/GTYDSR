@@ -36,7 +36,7 @@ public class BankDAO implements RowMapper<Bank> {
 	}
 
 	public List<Bank> getAllBanks() {
-		String SQL = "select * from bank";
+		String SQL = "select * from bank order by name asc";
 		List<Bank> banks = jdbcTemplate.query(SQL, this);
 		return banks;
 	}

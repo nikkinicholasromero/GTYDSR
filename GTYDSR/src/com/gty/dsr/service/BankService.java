@@ -9,30 +9,30 @@ import com.gty.dsr.dao.RecordDAO;
 import com.gty.dsr.domain.Bank;
 
 public final class BankService {
+	private static final BankDAO bankDao = BeanFactory.getBankDAO();
+	private static final BranchDAO branchDao = BeanFactory.getBranchDAO();
+	private static final RecordDAO recordDao = BeanFactory.getRecordDAO();
+	
 	private BankService() {
 	}
 
 	public static Bank getBankById(int id) {
-		BankDAO dao = BeanFactory.getBankDAO();
-		return dao.getBankById(id);
+		return bankDao.getBankById(id);
 	}
 
 	public static Bank getBankByBankName(String name) {
-		BankDAO dao = BeanFactory.getBankDAO();
-		return dao.getBankByBankName(name);
+		return bankDao.getBankByBankName(name);
 	}
 
 	public static List<Bank> getAllBanks() {
-		BankDAO dao = BeanFactory.getBankDAO();
-		return dao.getAllBanks();
+		return bankDao.getAllBanks();
 	}
 
 	public static String addBank(Bank bank) {
 		String validationResult = validateNewBank(bank);
 
 		if (validationResult.equalsIgnoreCase("success")) {
-			BankDAO dao = BeanFactory.getBankDAO();
-			dao.addBank(bank);
+			bankDao.addBank(bank);
 		}
 
 		return validationResult;
@@ -42,17 +42,11 @@ public final class BankService {
 		String validationResult = validateBankUpdate(bank);
 
 		if (validationResult.equalsIgnoreCase("success")) {
-			BankDAO bankDao = BeanFactory.getBankDAO();
 			Bank currentBank = bankDao.getBankById(bank.getId());
 			String currentBankName = currentBank.getName();
 			String newBankName= bank.getName();
-			
-			BranchDAO branchDao = BeanFactory.getBranchDAO();
 			branchDao.updateBankOfBranches(currentBankName, newBankName);
-			
-			RecordDAO recordDao = BeanFactory.getRecordDAO();
 			recordDao.updateBankOfRecords(currentBankName, newBankName);
-			
 			bankDao.updateBank(bank);
 		}
 
@@ -62,8 +56,7 @@ public final class BankService {
 	private static String validateNewBank(Bank bank) {
 		String validationResult = "success";
 
-		BankDAO dao = BeanFactory.getBankDAO();
-		Bank existingBank = dao.getBankByBankName(bank.getName());
+		Bank existingBank = bankDao.getBankByBankName(bank.getName());
 		if (existingBank != null) {
 			validationResult = "Bank name already exists. ";
 		} else if ("".equalsIgnoreCase(bank.getName())) {
@@ -76,8 +69,7 @@ public final class BankService {
 	private static String validateBankUpdate(Bank bank) {
 		String validationResult = "success";
 
-		BankDAO dao = BeanFactory.getBankDAO();
-		Bank existingBank = dao.getBankByBankName(bank.getName());
+		Bank existingBank = bankDao.getBankByBankName(bank.getName());
 		if ((existingBank != null) && (existingBank.getId() != bank.getId())) {
 			validationResult = "Bank name already exists. ";
 		} else if ("".equalsIgnoreCase(bank.getName())) {
